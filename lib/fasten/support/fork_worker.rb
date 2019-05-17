@@ -50,7 +50,8 @@ module Fasten
       end
 
       def send_response_to_parent(task)
-        log_info "Sending task response back to runner #{task}"
+        meta = %i[state ini fin dif response error].map { |key| [key, task.send("#{key}").class] }.to_h
+        log_info "Sending task response back to runner #{task} #{meta}"
 
         data = Marshal.dump(task)
         child_write.write(data)
